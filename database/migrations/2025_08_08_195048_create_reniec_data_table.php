@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('data', function (Blueprint $table) {
+        Schema::create('reniec_data', function (Blueprint $table) {
             $table->id();
             $table->string('document_number', 8)->unique();
             $table->string('cod_verificacion')->nullable();
@@ -49,6 +49,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('data');
+        Schema::dropIfExists('reniec_data');
     }
 };
