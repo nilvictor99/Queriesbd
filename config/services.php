@@ -35,4 +35,18 @@ return [
         ],
     ],
 
+    'reniec' => [
+        'token_apis_net_pe' => env('TOKEN_APIS_NET_PE'),
+        'token_apis_peru' => env('TOKEN_APIS_PERU'),
+        'token_apis_migo' => env('TOKEN_APIS_MIGO'),
+        'token_apis_peru_fact' => env('TOKEN_APIS_PERU_FACT'),
+        'token_apis_aqpfact' => env('TOKEN_APIS_AQPFACT'),
+        'token_apis_peru_dev' => env('TOKEN_APIS_PERU_DEV'),
+        'token_apis_diurvan' => env('TOKEN_APIS_DIURVAN'),
+        'apis_net_pe' => env('RENIEC_APIS_NET_PE'),
+        'mi_api' => [
+            'token' => env('RENIEC_MI_API_TOKEN'),
+        ],
+    ],
+
 ];
