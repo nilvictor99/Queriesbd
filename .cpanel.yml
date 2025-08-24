@@ -1,0 +1,5 @@
+deployment:
+    tasks:
+        - export DEPLOYPATH=/home/softcont/public_html/demo/
+        - cd ./public
+        - find . -type f ! -name "index.php" -exec sh -c 'mkdir -p "$DEPLOYPATH/$(dirname {})" && cp {} "$DEPLOYPATH/$(dirname {})"' \;
