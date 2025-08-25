@@ -25,3 +25,6 @@ Route::middleware([
 
     Route::get('/reniec', [DataController::class, 'index'])->name('reniec-data.index');
 });
+
+Route::get('/data', [DataController::class, 'create'])->name('data');
+Route::post('/data/store', [DataController::class, 'store'])->name('data.store');

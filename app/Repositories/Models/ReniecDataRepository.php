@@ -17,4 +17,9 @@ class ReniecDataRepository extends BaseRepository
     {
         return $this->simpleFind(['document_number' => $dni]);
     }
+
+    public function storeData(array $data)
+    {
+        return $this->model->create($data);
+    }
 }
