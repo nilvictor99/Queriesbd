@@ -28,8 +28,8 @@ class DataController extends Controller
         }
 
         return Inertia::render('ReniecData/Consult', [
-            'reniecData' => Inertia::lazy(fn() => $reniecData),
-            'dni' => Inertia::lazy(fn() => $dni),
+            'reniecData' => Inertia::lazy(fn () => $reniecData),
+            'dni' => Inertia::lazy(fn () => $dni),
         ]);
     }
 
@@ -45,31 +45,29 @@ class DataController extends Controller
         return redirect()->back()->with('message', 'Datos registrados correctamente');
     }
 
-    public function storeData(Request $request)
+    public function storeData(ReniecDataRequest $request)
     {
         try {
-            $validated = $request->validate([
-                'document_number' => 'required|string|max:20',
-            ]);
+            $validated = $request->validated();
 
             $result = $this->reniecService->storeData($validated);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Datos registrados correctamente',
-                'data' => $result
+                'data' => $result,
             ], 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Error de validación',
-                'errors' => $e->errors()
+                'errors' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Error al procesar la solicitud',
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ], 500);
         }
     }

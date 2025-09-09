@@ -21,5 +21,4 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
-
 Route::post('/reniec-data/store', [DataController::class, 'storeData'])->name('api.reniec-data.store');
