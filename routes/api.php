@@ -18,9 +18,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/sunat/{dni}', function (Request $request) {
         return GetSunatData::run($request->dni);
     });
-});
 
-Route::prefix('v1')->group(function () {
     Route::get('/data', [DataController::class, 'create'])->name('data');
     Route::post('/data/store', [DataController::class, 'store'])->name('data.store');
 });
