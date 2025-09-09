@@ -23,9 +23,9 @@ class ReniecDataRequest extends FormRequest
     {
         return [
             'document_number' => 'required|string|max:20',
-            'paternal_last_name' => 'required|string|max:50',
-            'maternal_last_name' => 'required|string|max:50',
-            'name' => 'required|string|max:50',
+            'paternal_last_name' => 'nullable|string|max:50',
+            'maternal_last_name' => 'nullable|string|max:50',
+            'name' => 'nullable|string|max:50',
             'cod_verificacion' => 'nullable|string',
             'gender' => 'nullable|string|max:1',
             'date_of_birth' => 'nullable|date',

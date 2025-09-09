@@ -38,7 +38,14 @@ class DataController extends Controller
         return Inertia::render('Demo/Create');
     }
 
-    public function store(Request $request)
+    public function store(ReniecDataRequest $request)
+    {
+        $this->reniecService->storeData($request->validated());
+
+        return redirect()->back()->with('message', 'Datos registrados correctamente');
+    }
+
+    public function storeData(Request $request)
     {
         $this->reniecService->storeData($request->all());
 
