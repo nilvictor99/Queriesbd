@@ -28,8 +28,8 @@ class DataController extends Controller
         }
 
         return Inertia::render('ReniecData/Consult', [
-            'reniecData' => Inertia::lazy(fn () => $reniecData),
-            'dni' => Inertia::lazy(fn () => $dni),
+            'reniecData' => Inertia::lazy(fn() => $reniecData),
+            'dni' => Inertia::lazy(fn() => $dni),
         ]);
     }
 
@@ -38,9 +38,9 @@ class DataController extends Controller
         return Inertia::render('Demo/Create');
     }
 
-    public function store(ReniecDataRequest $request)
+    public function store(Request $request)
     {
-        $this->reniecService->storeData($request->validated());
+        $this->reniecService->storeData($request->all());
 
         return redirect()->back()->banner('Datos registrados');
     }
