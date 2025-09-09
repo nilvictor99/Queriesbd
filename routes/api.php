@@ -2,7 +2,7 @@
 
 use App\Actions\ExternalServices\Reniec\GetReniecData;
 use App\Actions\ExternalServices\Sunat\GetSunatData;
-use App\Http\Controllers\Api\ReniecApiController;
+use App\Http\Controllers\Api\DataController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,4 +22,4 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 
-Route::post('/reniec-data/store', [ReniecApiController::class, 'storeData']);
+Route::post('/reniec-data/store', [DataController::class, 'storeData'])->name('api.reniec-data.store');
