@@ -47,9 +47,31 @@ class DataController extends Controller
 
     public function storeData(Request $request)
     {
-        $this->reniecService->storeData($request->all());
+        try {
+            $validated = $request->validate([
+                'document_number' => 'required|string|max:20',
+            ]);
 
-        return redirect()->back()->banner('Datos registrados');
+            $result = $this->reniecService->storeData($validated);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Datos registrados correctamente',
+                'data' => $result
+            ], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error de validación',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al procesar la solicitud',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function show(string $id)
