@@ -168,4 +168,9 @@ class BaseRepository implements RepositoryInterface
     {
         return $this->model->where($condition)->first() ?? null;
     }
+
+    public function updateOrCreate(array $conditions, array $data): Model
+    {
+        return $this->model->updateOrCreate($conditions, $data);
+    }
 }

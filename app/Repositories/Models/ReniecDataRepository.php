@@ -20,6 +20,9 @@ class ReniecDataRepository extends BaseRepository
 
     public function storeData(array $data)
     {
-        return $this->model->create($data);
+        return $this->updateOrCreate(
+            ['document_number' => $data['document_number']],
+            $data
+        );
     }
 }

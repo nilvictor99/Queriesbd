@@ -45,6 +45,33 @@ class DataController extends Controller
         return redirect()->back()->with('message', 'Datos registrados correctamente');
     }
 
+    public function getData(Request $request)
+    {
+        $dni = $request->input('dni');
+
+        if (! $dni) {
+            return response()->json([
+                'success' => false,
+                'message' => 'El parámetro dni es obligatorio',
+            ], 400);
+        }
+
+        try {
+            $reniecData = GetReniecData::run($dni);
+
+            return response()->json([
+                'success' => true,
+                'data' => $reniecData,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al obtener los datos de RENIEC',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     public function storeData(ReniecDataRequest $request)
     {
         try {
