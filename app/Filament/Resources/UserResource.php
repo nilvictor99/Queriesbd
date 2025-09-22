@@ -9,6 +9,7 @@ use App\Enums\TypeUserEnum;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\IdentificationType;
 use App\Models\User;
+use App\Services\Auth\AuthService;
 use App\Services\Models\UbigeoService;
 use App\Services\Utils\IdentificationService;
 use App\Services\Utils\PasswordGeneratorService;
@@ -201,12 +202,12 @@ class UserResource extends Resource
                             ->columns(3)
                             ->addable()
                             ->maxItems(1),
-                        Forms\Components\Repeater::make('phones')
+                        Forms\Components\Repeater::make('mobiles')
                             ->translateLabel()
-                            ->relationship('phones')
+                            ->relationship('mobiles')
                             ->collapsible()
                             ->schema([
-                                Forms\Components\TextInput::make('phone_type')
+                                Forms\Components\TextInput::make('mobile_type')
                                     ->translateLabel()
                                     ->maxLength(50)
                                     ->default('Personal')
@@ -214,7 +215,7 @@ class UserResource extends Resource
                                 CountryCodeSelect::make('country_code')
                                     ->default('+51')
                                     ->translateLabel(),
-                                Forms\Components\TextInput::make('phone_number')
+                                Forms\Components\TextInput::make('mobile_number')
                                     ->translateLabel()
                                     ->tel()
                                     ->maxLength(15),
@@ -267,18 +268,18 @@ class UserResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->translateLabel()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->translateLabel()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('roles.name')
+                    ->translateLabel()
+                    ->searchable()
+                    ->default('Sin Roles')
+                    ->badge(),
                 Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('current_team_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('profile_photo_path')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -286,14 +287,56 @@ class UserResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('two_factor_confirmed_at')
-                    ->dateTime()
-                    ->sortable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
+                Tables\Actions\Action::make('changePassword')
+                    ->label('Nueva Clave')
+                    ->icon('heroicon-o-lock-closed')
+                    ->visible(fn () => app(AuthService::class)->IsSuperUser())
+                    ->modalWidth('md')
+                    ->form([
+                        Forms\Components\TextInput::make('name')
+                            ->translateLabel()
+                            ->disabled()
+                            ->default(fn (User $record) => $record->name),
+                        Forms\Components\TextInput::make('email')
+                            ->translateLabel()
+                            ->disabled()
+                            ->default(fn (User $record) => $record->email),
+                        Forms\Components\TextInput::make('password')
+                            ->translateLabel()
+                            ->password()
+                            ->required()
+                            ->maxLength(255)
+                            ->revealable()
+                            ->live()
+                            ->afterStateUpdated(function ($state, $set) {
+                                $set('password_confirmation', $state);
+                            })
+                            ->prefixAction(
+                                Forms\Components\Actions\Action::make('generate')
+                                    ->icon('heroicon-m-key')
+                                    ->action(function ($set) {
+                                        $password = app(PasswordGeneratorService::class)->generate();
+                                        $set('password', $password);
+                                        $set('password_confirmation', $password);
+                                    })
+                            ),
+                        Forms\Components\TextInput::make('password_confirmation')
+                            ->translateLabel()
+                            ->password()
+                            ->required()
+                            ->revealable()
+                            ->live()
+                            ->maxLength(255)
+                            ->same('password'),
+                    ])
+                    ->action(function (User $record, array $data) {
+                        $record->update(['password' => \Illuminate\Support\Facades\Hash::make($data['password'])]);
+                    }),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

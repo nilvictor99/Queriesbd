@@ -70,4 +70,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function profile()
+    {
+        return $this->morphOne(Profile::class, 'profileable');
+    }
+
+    public function mobiles()
+    {
+        return $this->morphMany(Mobile::class, 'mobileable');
+    }
+
+    public function addresses()
+    {
+        return $this->morphMany(Addresse::class, 'addressable');
+    }
 }

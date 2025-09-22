@@ -369,5 +369,22 @@
     "You may delete any of your existing tokens if they are no longer needed.": "Puede eliminar cualquiera de sus tokens existentes si ya no los necesita.",
     "You may not delete your personal team.": "No se puede borrar su equipo personal.",
     "You may not leave a team that you created.": "No se puede abandonar un equipo que usted creó.",
-    "Your email address is unverified.": "Su dirección de correo electrónico no está verificada."
+    "Your email address is unverified.": "Su dirección de correo electrónico no está verificada.",
+    "Ubigeo cod": "Código de Ubigeo",
+    "Address": "Dirección",
+    "References": "Referencia",
+    "Type user": "Tipo de usuario",
+    "Identification type": "Tipo de identificación",
+    "Document number": "Número de documento",
+    "Full name": "Nombre completo",
+    "Gender": "Género",
+    "Date of birth": "Fecha de nacimiento",
+    "Civil status": "Estado civil",
+    "Education level": "Nivel de educación",
+    "Blood type": "Tipo de sangre",
+    "Mobile type": "Tipo de Contacto",
+    "Country code": "Código de país",
+    "Mobile number": "Número de contacto",
+    "Addresses": "Direcciones",
+    "Mobiles": "Contactos"
 }
