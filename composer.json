@@ -10,12 +10,14 @@
         "bezhansalleh/filament-shield": "^3.3",
         "filament/filament": "^3.3",
         "inertiajs/inertia-laravel": "^2.0",
+        "laravel-lang/common": "^6.7",
         "laravel/framework": "^12.0",
         "laravel/jetstream": "^5.3",
         "laravel/sanctum": "^4.2",
         "laravel/scout": "^10.17",
         "laravel/tinker": "^2.10.1",
         "lorisleiva/laravel-actions": "^2.9",
+        "tapp/filament-country-code-field": "^1.0",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {
