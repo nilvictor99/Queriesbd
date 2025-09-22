@@ -13,7 +13,27 @@ class ReniecDataResource extends Resource
 {
     protected static ?string $model = ReniecData::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    public static function getNavigationGroup(): ?string
+    {
+        return __('navigation-panel.Data Management');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('data.navegation_label');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('data.navegation_label');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('data.navegation_label_singel');
+    }
+
+    protected static ?string $navigationIcon = 'heroicon-o-finger-print';
 
     public static function form(Form $form): Form
     {
