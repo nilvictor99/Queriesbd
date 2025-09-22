@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.2",
         "bezhansalleh/filament-shield": "^3.3",
+        "eightynine/filament-advanced-widgets": "^3.0",
         "filament/filament": "^3.3",
         "inertiajs/inertia-laravel": "^2.0",
         "laravel-lang/common": "^6.7",
