@@ -2,15 +2,15 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\StatsOverview;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
-use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -28,8 +28,15 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => '#909ba4',
             ])
+            ->sidebarCollapsibleOnDesktop()
+            ->favicon(asset('/System/favicon/favicon.ico'))
+            ->darkModeBrandLogo(asset('/System/logo/logo.webp'))
+            ->brandLogo(asset('/System/logo/logo.webp'))
+            ->brandLogoHeight(fn () => request()->routeIs('filament.admin.auth.login') ? '6rem' : '3rem')
+            ->sidebarWidth('15rem')
+
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -37,8 +44,13 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                StatsOverview::class,
+            ])
+            ->userMenuItems([
+                'attention' => MenuItem::make()
+                    ->label('Panel de Atención')
+                    ->url('/dashboard')
+                    ->icon('heroicon-s-home'),
             ])
             ->middleware([
                 EncryptCookies::class,

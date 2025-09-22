@@ -1,0 +1,106 @@
+name: Laravel CI
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    laravel-tests:
+        runs-on: ubuntu-latest
+
+        services:
+            postgres:
+                image: postgres:13
+                env:
+                    POSTGRES_DB: laravel_test
+                    POSTGRES_USER: postgres
+                    POSTGRES_PASSWORD: postgres
+                ports:
+                    - 5432:5432
+                options: >-
+                    --health-cmd="pg_isready -U postgres"
+                    --health-interval=10s
+                    --health-timeout=5s
+                    --health-retries=5
+
+        steps:
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.3.11'
+
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: '22'
+
+            - name: Copy .env
+              run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+            - name: Install Dependencies
+              run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+            - name: Generate key
+              run: php artisan key:generate
+
+            - name: Install Node.js Dependencies
+              run: npm install
+
+            - name: Build Project
+              run: npm run build
+
+            - name: Directory Permissions
+              run: chmod -R 777 storage bootstrap/cache
+
+            - name: Check for Security Issues
+              run: composer audit
+
+            - name: Check Code Style
+              run: ./vendor/bin/pint --test
+
+            - name: Prettier Code Style Check
+              run: npm run format:check
+
+            - name: Check Code Style for vue whith ESlint
+              run: npm run lint
+
+            - name: Configure Database in .env
+              run: |
+                  php -r "file_put_contents('.env', preg_replace('/DB_CONNECTION=.*/', 'DB_CONNECTION=pgsql', file_get_contents('.env')));"
+                  php -r "file_put_contents('.env', preg_replace('/DB_HOST=.*/', 'DB_HOST=127.0.0.1', file_get_contents('.env')));"
+                  php -r "file_put_contents('.env', preg_replace('/DB_PORT=.*/', 'DB_PORT=5432', file_get_contents('.env')));"
+                  php -r "file_put_contents('.env', preg_replace('/DB_DATABASE=.*/', 'DB_DATABASE=laravel_test', file_get_contents('.env')));"
+                  php -r "file_put_contents('.env', preg_replace('/DB_USERNAME=.*/', 'DB_USERNAME=postgres', file_get_contents('.env')));"
+                  php -r "file_put_contents('.env', preg_replace('/DB_PASSWORD=.*/', 'DB_PASSWORD=postgres', file_get_contents('.env')));"
+                  php -r "file_put_contents('.env', preg_replace('/BROADCAST_DRIVER=.*/', 'BROADCAST_DRIVER=log', file_get_contents('.env')));"
+
+            - name: Wait for PostgreSQL to be ready
+              run: |
+                  for i in {1..30}; do
+                    if pg_isready -h 127.0.0.1 -p 5432 -U postgres; then
+                      echo "PostgreSQL is ready!"
+                      break
+                    fi
+                    echo "Waiting for PostgreSQL..."
+                    sleep 1
+                  done
+
+            - name: Run Migrations
+              run: php artisan migrate
+
+            - name: Execute Tests (Unit and Feature tests) via PHPUnit/Pest
+              env:
+                  DB_CONNECTION: pgsql
+                  DB_HOST: 127.0.0.1
+                  DB_PORT: 5432
+                  DB_DATABASE: laravel_test
+                  DB_USERNAME: postgres
+                  DB_PASSWORD: postgres
+              run: php artisan test
+
+            - name: Show logs
+              run: cat storage/logs/laravel.log || echo "No logs found."

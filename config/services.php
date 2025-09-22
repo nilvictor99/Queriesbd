@@ -49,4 +49,9 @@ return [
         ],
     ],
 
+    'data' => [
+        'token' => env('TOKEN_CONSULTA'),
+        'endpoint' => env('ENDPOINT_CONSULTA'),
+    ],
+
 ];

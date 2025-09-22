@@ -14,12 +14,13 @@ class InitialConfigSeeder extends Seeder
      */
     public function run(): void
     {
-        $role = Role::create(['name' => 'super']);
+        $role = Role::create(['name' => 'Super Usuario']);
 
         $user = User::create([
             'name' => config('owner-system.user.name'),
             'email' => config('owner-system.user.email'),
             'password' => Hash::make(config('owner-system.user.password')),
+            'type_user' => 'Simple',
         ]);
         $user->assignRole($role);
     }

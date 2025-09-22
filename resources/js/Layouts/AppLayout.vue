@@ -268,6 +268,10 @@
                                             Profile
                                         </DropdownLink>
 
+                                        <DropdownLink href="/admin" as="a">
+                                            Panel Administrador
+                                        </DropdownLink>
+
                                         <DropdownLink
                                             v-if="
                                                 $page.props.jetstream
