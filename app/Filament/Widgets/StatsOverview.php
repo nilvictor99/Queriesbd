@@ -41,11 +41,11 @@ class StatsOverview extends BaseWidget
 
             Stat::make('Registros por Género', ($genderCount['M'] ?? 0).' / '.($genderCount['F'] ?? 0))
                 ->icon('heroicon-o-user-group')
-                ->iconBackgroundColor('warning')
+                ->iconBackgroundColor('info')
                 ->description('Masculino / Femenino')
                 ->descriptionIcon('heroicon-o-chart-pie', 'before')
-                ->descriptionColor('warning')
-                ->iconColor('warning'),
+                ->descriptionColor('info')
+                ->iconColor('info'),
 
             Stat::make('Registros de Hoy', number_format($todayRecords))
                 ->icon('heroicon-o-clock')
