@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             IdentificationTypeSeeder::class,
             UbigeoSeeder::class,
+            RoleSeeder::class,
             InitialConfigSeeder::class,
         ]);
     }
