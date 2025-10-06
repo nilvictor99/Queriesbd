@@ -7,6 +7,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "ext-bcmath": "*",  
+        "ext-zip": "*",       
+        "ext-intl": "*",       
         "aymanalhattami/filament-slim-scrollbar": "^2.1",
         "bezhansalleh/filament-shield": "^3.3",
         "eightynine/filament-advanced-widgets": "^3.0",
